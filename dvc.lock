@@ -1,0 +1,66 @@
+schema: '2.0'
+stages:
+  unzip-data:
+    cmd: unzip data.zip
+    deps:
+    - path: data.zip
+      hash: md5
+      md5: 4ec3de167a16ff1a4e48227a826e9ffa
+      size: 363491732
+    outs:
+    - path: dataset-landscape-main
+      hash: md5
+      md5: 238c45c55d110097cce457f3b6a8c600.dir
+      size: 368859683
+      nfiles: 24337
+  train:
+    cmd: python -m tp_compression train
+    deps:
+    - path: dataset-landscape-main/seg_train
+      hash: md5
+      md5: 26ead25fdb2268128d40ade86d29e228.dir
+      size: 212876095
+      nfiles: 14034
+    - path: params.yaml
+      hash: md5
+      md5: d4553294a7ac7a0cc4415cafa4adbfd9
+      size: 243
+    - path: tp_compression/data.py
+      hash: md5
+      md5: a88e0d0c863c08585451c1e093509d37
+      size: 1584
+    - path: tp_compression/train.py
+      hash: md5
+      md5: c571c56efd9234ac9af6ef086dae57a1
+      size: 882
+    outs:
+    - path: landscape_classifier.keras
+      hash: md5
+      md5: c0d04f9430d927b69b3eeaca91ffda9b
+      size: 12394648
+  compress:
+    cmd: python -m tp_compression compress
+    deps:
+    - path: dataset-landscape-main/seg_test
+      hash: md5
+      md5: 33cfdaa1708c48814a4a1206bde93c92.dir
+      size: 45382818
+      nfiles: 3000
+    - path: dataset-landscape-main/seg_train
+      hash: md5
+      md5: 26ead25fdb2268128d40ade86d29e228.dir
+      size: 212876095
+      nfiles: 14034
+    - path: landscape_classifier.keras
+      hash: md5
+      md5: c0d04f9430d927b69b3eeaca91ffda9b
+      size: 12394648
+    - path: params.yaml
+      hash: md5
+      md5: d4553294a7ac7a0cc4415cafa4adbfd9
+      size: 243
+    outs:
+    - path: landscape_classifier.tflite
+      hash: md5
+      md5: 8ee95b3d85dce617bfc890666e6f70dd
+      size: 1035864

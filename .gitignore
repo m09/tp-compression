@@ -1,0 +1,5 @@
+/data.zip
+/dataset-landscape-main
+__pycache__/
+/landscape_classifier.keras
+/landscape_classifier.tflite

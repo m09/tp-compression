@@ -1,0 +1,40 @@
+stages:
+  unzip-data:
+    cmd: unzip data.zip
+    deps:
+      - data.zip
+    outs:
+      - dataset-landscape-main
+  train:
+    cmd: python -m tp_compression train
+    deps:
+      - dataset-landscape-main/seg_train
+      - params.yaml
+      - tp_compression/train.py
+      - tp_compression/data.py
+    outs:
+      - landscape_classifier.keras
+  compress:
+    cmd: python -m tp_compression compress
+    deps:
+      - dataset-landscape-main/seg_train
+      - dataset-landscape-main/seg_test
+      - landscape_classifier.keras
+      - params.yaml
+    outs:
+      - landscape_classifier.tflite
+metrics:
+  - dvclive/train/metrics.json
+  - dvclive/compress/metrics.json
+plots:
+  - dvclive/train/plots/metrics:
+      x: step
+  - dvclive/compress/plots/metrics:
+      x: step
+artifacts:
+  landscape_classifier:
+    path: landscape_classifier.keras
+    type: model
+  landscape_classifier_lite:
+    path: landscape_classifier.tflite
+    type: model

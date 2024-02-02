@@ -1,0 +1,9 @@
+model_type: lenet
+learning_rate: 0.0001
+train_data: dataset-landscape-main/seg_train
+test_data: dataset-landscape-main/seg_test
+model_path: landscape_classifier.keras
+tf_lite_model_path: landscape_classifier.tflite
+image_size:
+  - 100
+  - 100
